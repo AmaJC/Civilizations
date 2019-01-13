@@ -81,7 +81,7 @@ function update(time, delta) {
     if (shiftKey.isDown) {
       groundLayer.removeTileAtWorldXY(worldPoint.x, worldPoint.y);
     } else {
-      groundLayer.putTileAtWorldXY(353, worldPoint.x, worldPoint.y);
+      groundLayer.putTileAtWorldXY(14, worldPoint.x, worldPoint.y);
     }
   }
 }
