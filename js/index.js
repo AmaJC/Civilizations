@@ -63,22 +63,17 @@ function create() {
     })
     .setScrollFactor(0);
 
-  // Side bar HUD
-  this.hud = this.add
-    .text(map.heightInPixels - 100, 100, "Wood: 50", {
-      font: "18px monospace",
-      fill: "#000000",
-      padding: { x: 20, y: 10 },
-      backgroundColor: "#ffffff"
-    })
-    .setScrollFactor(0);
-
-    // create a group for our graphics
+    // Side bar HUD
     let group = this.add.group();
-    let graphics = this.add.graphics()
-    graphics.lineStyle(2, 0xFFBBFF, 1);
-    graphics.fillRect(0, 0, 10000, 1000);
-    group.add(graphics)
+    let hud = this.add.graphics()
+    hud.lineStyle(5, 0xafa782, 1.0);
+    hud.fillStyle(0xe2d8ae, 1.0);
+    console.log(map.widthInPixels)
+    console.log(map.heightInPixels)
+    hud.fillRect(config.width - 200, 2, 200, config.height); // x, y, width, height
+    hud.strokeRect(config.width - 202, 2, 200, config.height - 4);
+    hud.setScrollFactor(0);
+    group.add(hud)
 
     this.wood = 50;
 
