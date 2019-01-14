@@ -48,20 +48,40 @@ function create() {
 
   // Create a simple graphic that can be used to show which tile the mouse is over
   marker = this.add.graphics();
-  marker.lineStyle(5, 0xffffff, 1);
+  marker.lineStyle(2, 0xffffff, 1);
   marker.strokeRect(0, 0, map.tileWidth, map.tileHeight);
-  marker.lineStyle(3, 0xff4f78, 1);
+  marker.lineStyle(3, 0xffffff, 1);
   marker.strokeRect(0, 0, map.tileWidth, map.tileHeight);
 
   // Help text that has a "fixed" position on the screen
   this.add
-    .text(16, 16, "Arrow keys to scroll\nLeft-click to draw tiles\nShift + left-click to erase", {
+    .text(16, 16, "Arrow keys to scroll\nLeft-click to draw tiles", {
       font: "18px monospace",
       fill: "#000000",
       padding: { x: 20, y: 10 },
       backgroundColor: "#ffffff"
     })
     .setScrollFactor(0);
+
+  // Side bar HUD
+  this.hud = this.add
+    .text(map.heightInPixels - 100, 100, "Wood: 50", {
+      font: "18px monospace",
+      fill: "#000000",
+      padding: { x: 20, y: 10 },
+      backgroundColor: "#ffffff"
+    })
+    .setScrollFactor(0);
+
+    // create a group for our graphics
+    let group = this.add.group();
+    let graphics = this.add.graphics()
+    graphics.lineStyle(2, 0xFFBBFF, 1);
+    graphics.fillRect(0, 0, 10000, 1000);
+    group.add(graphics)
+
+    this.wood = 50;
+
 }
 
 function update(time, delta) {
@@ -81,7 +101,14 @@ function update(time, delta) {
     if (shiftKey.isDown) {
       groundLayer.removeTileAtWorldXY(worldPoint.x, worldPoint.y);
     } else {
-      groundLayer.putTileAtWorldXY(14, worldPoint.x, worldPoint.y);
+      var clickedTile = groundLayer.getTileAtWorldXY(worldPoint.x, worldPoint.y);
+      if (clickedTile === null) {
+        return;
+      }
+      if (clickedTile.index == 11 && this.wood >= 2) {
+        groundLayer.putTileAtWorldXY(14, worldPoint.x, worldPoint.y);
+        this.wood -= 2;
+      }
     }
   }
 }
