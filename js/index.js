@@ -16,6 +16,18 @@ let controls;
 let marker;
 let shiftKey;
 let groundLayer;
+let hudResources;
+
+// All the hud resources go here
+let population;
+let wood;
+let stone;
+
+let tileIndexToName = {
+  11: "Land",
+  12: "Water",
+  14: "Dirt"
+}
 
 function preload() {
   this.load.image("tiles", "assets/tilesets/basictileset.png");
@@ -73,18 +85,33 @@ function create() {
     hud.fillRect(config.width - 200, 2, 200, config.height); // x, y, width, height
     hud.strokeRect(config.width - 202, 2, 200, config.height - 4);
     hud.setScrollFactor(0);
+
+    hud.beginPath();
+    hud.moveTo(config.width - 200, 115);
+    hud.lineTo(config.width, 115);
+    hud.closePath();
+    hud.strokePath();
     group.add(hud)
 
-    this.woodCounter = this.add
-    .text(config.width - 200, 16, "Wood: 50", {
-      font: "22px monospace",
+    population = 0;
+    wood = 50;
+    stone = 10;
+
+    this.hudHoverTileInfo = this.add
+    .text(config.width - 200, 125, "This area:\n", {
+      font: "20px monospace",
       fill: "#000000",
       padding: { x: 20, y: 10 },
-    })
-    .setScrollFactor(0);
+    });
+    this.hudHoverTileInfo.setScrollFactor(0);
 
-    this.wood = 50;
-
+    hudResources = this.add
+    .text(config.width - 200, 16, "Population: 0\nWood: 10\nStone: 10", { 
+      font: "20px monospace",
+      fill: "#000000",
+      padding: { x: 20, y: 10 }, 
+    });
+    hudResources.setScrollFactor(0);
 }
 
 function update(time, delta) {
@@ -98,6 +125,8 @@ function update(time, delta) {
   const pointerTileXY = groundLayer.worldToTileXY(worldPoint.x, worldPoint.y);
   const snappedWorldPoint = groundLayer.tileToWorldXY(pointerTileXY.x, pointerTileXY.y);
   marker.setPosition(snappedWorldPoint.x, snappedWorldPoint.y);
+  var hoverTile = groundLayer.getTileAtWorldXY(worldPoint.x, worldPoint.y);
+  updateHudHoverTile(tileIndexToName[hoverTile.index])
 
   // Draw or erase tiles (only within the groundLayer)
   if (this.input.manager.activePointer.isDown) {
@@ -108,11 +137,20 @@ function update(time, delta) {
       if (clickedTile === null) {
         return;
       }
-      if (clickedTile.index == 11 && this.wood >= 2) {
+      if (clickedTile.index == 11 && wood >= 2) {
         groundLayer.putTileAtWorldXY(14, worldPoint.x, worldPoint.y);
-        this.wood -= 2;
-        this.woodCounter.setText(`Wood: ${this.wood}`);
+        wood -= 2;
       }
     }
   }
+  
+  updateHudResources();
+}
+
+function updateHudResources() {
+  hudResources.setText(`Population: ${ population }\nWood: ${ wood }\nStone: ${ stone }`);
+}
+
+function updateHudHoverTile(tileName) {
+  //this.hudHoverTileInfo.setText(tileName);
 }
