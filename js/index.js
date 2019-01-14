@@ -22,6 +22,8 @@ let hudResources;
 let population;
 let wood;
 let stone;
+let food;
+let hudHoverTileInfo;
 
 let tileIndexToName = {
   11: "Land",
@@ -87,8 +89,8 @@ function create() {
     hud.setScrollFactor(0);
 
     hud.beginPath();
-    hud.moveTo(config.width - 200, 115);
-    hud.lineTo(config.width, 115);
+    hud.moveTo(config.width - 200, 125);
+    hud.lineTo(config.width, 125);
     hud.closePath();
     hud.strokePath();
     group.add(hud)
@@ -96,21 +98,23 @@ function create() {
     population = 0;
     wood = 50;
     stone = 10;
+    food = 0;
 
-    this.hudHoverTileInfo = this.add
+    hudHoverTileInfo = this.add
     .text(config.width - 200, 125, "This area:\n", {
       font: "20px monospace",
       fill: "#000000",
       padding: { x: 20, y: 10 },
     });
-    this.hudHoverTileInfo.setScrollFactor(0);
+    hudHoverTileInfo.setScrollFactor(0);
 
     hudResources = this.add
-    .text(config.width - 200, 16, "Population: 0\nWood: 10\nStone: 10", { 
-      font: "20px monospace",
-      fill: "#000000",
-      padding: { x: 20, y: 10 }, 
-    });
+    .text(config.width - 200, 16, 
+      `Population: ${ population }\nWood: ${ wood }\nStone: ${ stone }\nFood: ${ food }`, 
+      { font: "20px monospace",
+        fill: "#000000",
+        padding: { x: 20, y: 10 }}
+    );
     hudResources.setScrollFactor(0);
 }
 
@@ -143,14 +147,14 @@ function update(time, delta) {
       }
     }
   }
-  
+
   updateHudResources();
 }
 
 function updateHudResources() {
-  hudResources.setText(`Population: ${ population }\nWood: ${ wood }\nStone: ${ stone }`);
+  hudResources.setText(`Population: ${ population }\nWood: ${ wood }\nStone: ${ stone }\nFood: ${ food }`);
 }
 
 function updateHudHoverTile(tileName) {
-  //this.hudHoverTileInfo.setText(tileName);
+  hudHoverTileInfo.setText(`This area:\n ${ tileName }`);
 }
