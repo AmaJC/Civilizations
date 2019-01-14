@@ -75,6 +75,14 @@ function create() {
     hud.setScrollFactor(0);
     group.add(hud)
 
+    this.add
+    .text(config.width - 200, 16, "Wood: 50", {
+      font: "22px monospace",
+      fill: "#000000",
+      padding: { x: 20, y: 10 },
+    })
+    .setScrollFactor(0);
+
     this.wood = 50;
 
 }
