@@ -75,7 +75,7 @@ function create() {
     hud.setScrollFactor(0);
     group.add(hud)
 
-    this.add
+    this.woodCounter = this.add
     .text(config.width - 200, 16, "Wood: 50", {
       font: "22px monospace",
       fill: "#000000",
@@ -111,6 +111,7 @@ function update(time, delta) {
       if (clickedTile.index == 11 && this.wood >= 2) {
         groundLayer.putTileAtWorldXY(14, worldPoint.x, worldPoint.y);
         this.wood -= 2;
+        this.woodCounter.setText(`Wood: ${this.wood}`);
       }
     }
   }
